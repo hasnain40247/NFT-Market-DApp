@@ -11,7 +11,7 @@ const Clouds = () => {
 
   return (
     <div className="introsection2">
-<canvas id="void22"></canvas>
+      <canvas id="void22"></canvas>
     </div>
   );
 };
