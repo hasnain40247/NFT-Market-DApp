@@ -15,7 +15,7 @@ const DiveHome = () => {
       <h1 className="absoluteTitle">HOME</h1>
       <DiveSection />
       <Clouds />
-      <Discover/>
+      <Discover />
       <Footer />
     </>
   );

@@ -16,7 +16,7 @@ function LoadScene() {
 
   camera.position.z = 200;
 
-  camera.aspect = window.innerWidth / window.innerHeight 
+  camera.aspect = window.innerWidth / window.innerHeight;
 
   const canvas = document.getElementById("void");
 
@@ -24,9 +24,9 @@ function LoadScene() {
     canvas,
     antialias: true,
   });
-  renderer.setSize(window.innerWidth*0.99 , window.innerHeight)
+  renderer.setSize(window.innerWidth * 0.99, window.innerHeight);
 
-  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setPixelRatio(window.devicePixelRatio);
 
   const ambientLight = new THREE.AmbientLight(0x0000ff, 40);
 
@@ -35,20 +35,25 @@ function LoadScene() {
   const points = [];
 
   let starGeometry = new THREE.BufferGeometry();
-  starGeometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array(6 * line), 3));
-  starGeometry.setAttribute("velocity", new THREE.BufferAttribute(new Float32Array(2 * line), 1));
+  starGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(new Float32Array(6 * line), 3)
+  );
+  starGeometry.setAttribute(
+    "velocity",
+    new THREE.BufferAttribute(new Float32Array(2 * line), 1)
+  );
 
-  let position = starGeometry["attributes"]["position"]
+  let position = starGeometry["attributes"]["position"];
   let positionArray = position["array"];
   let velocity = starGeometry["attributes"]["velocity"];
   let velocityArray = velocity["array"];
-  let mouseX = 0
-  let mouseY = 0
-  let targetX = 0
-  let targetY = 0
-    const windowHalfX = window.innerWidth / 2
-    const windowHalfY = window.innerHeight / 2
-
+  let mouseX = 0;
+  let mouseY = 0;
+  let targetX = 0;
+  let targetY = 0;
+  const windowHalfX = window.innerWidth / 2;
+  const windowHalfY = window.innerHeight / 2;
 
   for (let i = 0; i < line; i++) {
     var x = Math.random() * 400 - 200;
@@ -69,57 +74,43 @@ function LoadScene() {
     velocityArray[2 * i] = velocityArray[2 * i + 1] = 0;
   }
 
-  let lineBasicMaterial=new THREE.LineBasicMaterial({color:0xADD8E6})
-  let lines=new THREE.LineSegments(starGeometry, lineBasicMaterial)
-  scene.add(lines)
-  document.addEventListener( 'mousemove', onMouseMove, false );
-  window.addEventListener( 'resize', onWindowResize, false );
-  function onWindowResize(){
+  let lineBasicMaterial = new THREE.LineBasicMaterial({ color: 0xadd8e6 });
+  let lines = new THREE.LineSegments(starGeometry, lineBasicMaterial);
+  scene.add(lines);
+  document.addEventListener("mousemove", onMouseMove, false);
+  window.addEventListener("resize", onWindowResize, false);
+  function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
 
-
-
-    camera.aspect = (window.innerWidth)/( window.innerHeight);
-   
-    
     camera.updateProjectionMatrix();
 
-    renderer.setSize( window.innerWidth*0.99,window.innerHeight);
-
-}
-  function onMouseMove( event ) {
-
-    mouseX = (event.clientX - windowHalfX)
-    mouseY = (event.clientY - windowHalfY)
-
-}
+    renderer.setSize(window.innerWidth * 0.99, window.innerHeight);
+  }
+  function onMouseMove(event) {
+    mouseX = event.clientX - windowHalfX;
+    mouseY = event.clientY - windowHalfY;
+  }
   const animate = () => {
     for (let i = 0; i < line; i++) {
-     
-        velocityArray[2 * i] += 0.03;
-        velocityArray[2 * i + 1] +=0.025 ;
-        positionArray[6 * i + 2] += velocityArray[2*i];
-        positionArray[6 * i + 5] += velocityArray[2*i+1];
+      velocityArray[2 * i] += 0.03;
+      velocityArray[2 * i + 1] += 0.025;
+      positionArray[6 * i + 2] += velocityArray[2 * i];
+      positionArray[6 * i + 5] += velocityArray[2 * i + 1];
 
-        if(positionArray[6*i+5]>200){
-            var z= Math.random()*200-100
-            positionArray[6*i+2]=z
-            positionArray[6*i+5]=z
-            velocityArray[2*i]=0
-            velocityArray[2*i+1]=0
-
-
-        }
-
-
-
+      if (positionArray[6 * i + 5] > 200) {
+        var z = Math.random() * 200 - 100;
+        positionArray[6 * i + 2] = z;
+        positionArray[6 * i + 5] = z;
+        velocityArray[2 * i] = 0;
+        velocityArray[2 * i + 1] = 0;
       }
-      position.needsUpdate=true
-    targetX = ( 1 - mouseX ) * 0.0005;
-    targetY = ( 1 - mouseY ) * 0.0005;
-    
-      
-      camera.rotation.x += 0.5 * ( targetY - camera.rotation.x );
-      camera.rotation.y += 0.5 * ( targetX - camera.rotation.y );
+    }
+    position.needsUpdate = true;
+    targetX = (1 - mouseX) * 0.0005;
+    targetY = (1 - mouseY) * 0.0005;
+
+    camera.rotation.x += 0.5 * (targetY - camera.rotation.x);
+    camera.rotation.y += 0.5 * (targetX - camera.rotation.y);
     requestAnimationFrame(animate);
 
     renderer.render(scene, camera);
