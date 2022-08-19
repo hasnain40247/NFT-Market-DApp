@@ -69,7 +69,9 @@ const DiveNavbar = (props) => {
                 cursor: "pointer",
                 textDecoration: isActive ? "underline" : "none",
               })}
-            ></NavLink>
+            >
+              {page.title}
+            </NavLink>
           );
         })}
 
